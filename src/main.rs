@@ -1,29 +1,15 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use std::io;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok()
-        .body("Hello world!, I am learning Actix web and using watch to watch for file as well")
-}
+fn main() {
+    println!("Guess the number!");
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
+    println!("Please input your guess");
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
+    let mut guess = String::new();
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
-    })
-    .bind(("actix-web.test", 8000))?
-    .run()
-    .await
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    println!("You guessed: {guess}");
 }
